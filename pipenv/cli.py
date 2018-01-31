@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import time
+times = []
+times.append(time.clock())
+
 """import contextlib
 import codecs
 import os
@@ -63,6 +67,8 @@ if sys.version_info < (3, 3):
 else:
     from shutil import get_terminal_size
 
+times.append(time.clock())
+print('imports took', times[-1] - times[-2])
 
 xyzzy = """
  _______   __                                           __
@@ -227,6 +233,8 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.version_option(prog_name=crayons.normal('pipenv', bold=True), version=__version__)
 @click.pass_context
 def cli(*args, completion=False, **kwargs):
+    times.append(time.clock())
+    print('to cli start', times[-1] - times[-2])
     if completion:
         if PIPENV_SHELL:
             os.environ['_PIPENV_COMPLETE'] = 'source-{0}'.format(PIPENV_SHELL.split(os.sep)[-1])
@@ -238,6 +246,8 @@ def cli(*args, completion=False, **kwargs):
 
         c = delegator.run('pipenv')
         click.echo(c.out)
+        times.append(time.clock())
+        print('to cli end', times[-1] - times[-2])
         sys.exit(0)
 
     from pipenv.cli_heavy import cli
@@ -385,3 +395,5 @@ if '-' not in ''.join(sys.argv) and len(sys.argv) > 1:
 
 if __name__ == '__main__':
     cli()
+times.append(time.clock())
+print('to file end', times[-1] - times[-2])
