@@ -236,16 +236,13 @@ def cli(*args, completion=False, **kwargs):
     times.append(time.clock())
     print('to cli start', times[-1] - times[-2])
     if completion:
-        if PIPENV_SHELL:
-            os.environ['_PIPENV_COMPLETE'] = 'source-{0}'.format(PIPENV_SHELL.split(os.sep)[-1])
-        else:
+        if not PIPENV_SHELL:
             click.echo(
                 'Please ensure that the {0} environment variable '
                 'is set.'.format(crayons.normal('SHELL', bold=True)), err=True)
             sys.exit(1)
 
-        c = delegator.run('pipenv')
-        click.echo(c.out)
+        click.echo(click_completion.get_code(shell=PIPENV_SHELL.split(os.sep)[-1]))
         times.append(time.clock())
         print('to cli end', times[-1] - times[-2])
         sys.exit(0)
